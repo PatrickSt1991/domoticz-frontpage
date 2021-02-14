@@ -1,0 +1,1 @@
+[{"id":"7f62fc6e.9ca404","type":"file","z":"f9b503a4.85f44","name":"Create JSON File","filename":"/var/www/domoticz/cal/calender.json","appendNewline":true,"createDir":true,"overwriteFile":"true","encoding":"none","x":830,"y":200,"wires":[[]]}]

@@ -1,0 +1,206 @@
+<!-------------------------------------------------------->
+<!--	SmartHome Bootstrap Website.					-->	
+<!--	Based on Elegance Template.						-->
+<!--	URL: https://templatemo.com/tm-528-elegance		-->
+<!--	Images in buttons are from FontAwesome			-->
+<!--	URL: https://fontawesome.com/					-->
+<!-------------------------------------------------------->
+<!--	Modified by Patrick.							-->
+<!--	Show Smartthings on you wall tablet.			-->
+<!-------------------------------------------------------->
+<!--	Line 152 till 156 contains the buttons 			-->
+<!--	Don't forget to change ToggleSwitch number		-->
+<!--	Custom Javascript Files;						-->
+<!--	 - domoticz.js 	(Fetch domoticz status)			-->
+<!--	 - chart.js		(Fets Solarpanel info)			-->
+<!--	 - calendar.js	(Fets Google Calendar info)		-->
+<!-------------------------------------------------------->
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,900" rel="stylesheet">
+
+		<title>SmartHome Dashboard</title>
+		<script src="js/jquery.js"></script>
+		<!-- Additional CSS Files -->
+		<link rel="stylesheet" type="text/css" href="css/flaticon.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/fullpage.min.css">
+		<link rel="stylesheet" type="text/css" href="css/responsive.css">
+		<link rel="stylesheet" type="text/css" href="css/templatemo-style.css">
+		<link rel="stylesheet" type="text/css" href="css/icon.css">
+	</head>
+    
+    <body>
+	<script>
+		$(document).ready(function(){
+			
+			var pageRefresh = 5000; //5 s
+			
+			$('[id^=btn_]').click(function(){
+				var buttonPressed = event.target.id;
+				var buttonId = buttonPressed.split('_')[1];
+				var correctButton = ("btn_"+buttonId);
+				var correntInteger = ("i_"+buttonId);
+				var e = document.getElementById(correctButton).getAttribute("active");
+				
+				if(e === 'default')
+				{
+					$("#"+correntInteger).attr('style', 'color: #DECF3F');
+					$("#"+correctButton).attr('style', 'background-color: #EFEFEF');
+					$("#"+correctButton).attr('active', 'yes');
+				}
+				if(e === 'yes')
+				{
+					$("#"+correntInteger).attr('style', null);
+					$("#"+correctButton).attr('style', null);
+					$("#"+correctButton).attr('active', 'default');
+				}
+				
+			});
+			
+			setInterval(function() {
+				getSceneData();
+				getSwitchData();
+				getTimeDateTemp();
+				roombaVirtualWall();
+			}, pageRefresh);
+			
+			getSceneData();
+			getSwitchData();
+			getTimeDateTemp();
+			roombaVirtualWall();
+		});
+	</script>	
+    <div id="video">
+        <header id="header">
+            <div class="container-fluid">
+                <div class="navbar">
+                    <a href="#" id="logo" title="Elegance by TemplateMo">
+                        SmartHome
+                    </a>
+					<p id="showDateWeather" class="mb-0"></p>
+                    <div class="navigation-row">
+                        <nav id="navigation">
+                            <button type="button" class="navbar-toggle"> <i class="fa fa-bars"></i> </button>
+                            <div class="nav-box navbar-collapse">
+                                <ul class="navigation-menu nav navbar-nav navbars" id="nav">
+                                    <li data-menuanchor="slide01" class="active"><a href="#slide01">Start</a></li>
+                                    <li data-menuanchor="slide02"><a href="#slide02">Zonnepanelen</a></li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div id="fullpage" class="fullpage-default">
+            <div class="section animated-row" data-section="slide01">
+				<div class="section-inner">
+					<div class="d-flex justify-content-center">
+						<div class="container">
+							<div class="row p-2">
+								<div class="col-sm align-self-center title-block animate" data-animate="fadeInUp">
+									<div class="container_clock">					
+									<div id="myclock"></div>
+									</div>
+								</div>
+								<div id="eventList" class="col-sm align-self-center title-block animate" data-animate="fadeInUp">
+									<div class="mr-auto">
+										<span>Kalender</span>
+										<ul id="calendarEvents" class="list-group list-group-flush" style="text-align: center;">
+											<!-- word aangemaakt door Javascript -->
+										</ul>
+									</div>
+									<div id="hidden_warning" class="alert alert-danger" role="alert" style="border-color: #000; display: none;">
+									  <b><u>Roomba Virtual Wall</u></b><br/>
+									  batterijen zijn leeg!
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+				
+				<div class="row d-flex weather">
+					<div class="weakly-weather-item">
+						<p id="forecastday00" class="mb-0" style="font-size: 18px;"></p> 
+						<p id="forecastweather00" class="mb-0" style="font-size: 18px;"></p>
+					</div>
+					<div class="weakly-weather-item">
+						<p id="forecastday01" class="mb-0" style="font-size: 18px;"></p> 
+						<p id="forecastweather01" class="mb-0" style="font-size: 18px;"></p>
+					</div>
+					<div class="weakly-weather-item">
+						<p id="forecastday02" class="mb-0" style="font-size: 18px;"></p> 
+						<p id="forecastweather02" class="mb-0" style="font-size: 18px;"></p>
+					</div>
+					<div class="weakly-weather-item">
+						<p id="forecastday03" class="mb-0" style="font-size: 18px;"></p> 
+						<p id="forecastweather03" class="mb-0" style="font-size: 18px;"></p>
+					</div>
+					<div class="weakly-weather-item">
+						<p id="forecastday04" class="mb-0" style="font-size: 18px;"></p> 
+						<p id="forecastweather04" class="mb-0" style="font-size: 18px;"></p>
+					</div>
+				</div>
+				<br/>
+				<!--!!..don't forget to change the ToggleSwitch value..!!-->
+				<div id="buttons" class="btn-group d-flex" role="group">
+					<button id="btn_35" type="button" onclick='ToggleSwitch("35");' active="default" class="btn btn-default w-100"><i id="i_35" class="flaticon-ps4 align-self-center"></i><span id="span_35" class="count-number">Playstation</span></button>
+					<button id="btn_44" type="button" onclick='ToggleSwitch("44");' active="default" class="btn btn-default w-100"><i id="i_44" class="flaticon-cleaner align-self-center"></i><span id="span_44" class="count-number">Roomba</span></button>
+					<button id="btn_43" type="button" onclick='ToggleSwitch("43");' active="default" class="btn btn-default w-100"><i id="i_43" class="flaticon-swimming-pool align-self-center"></i><span id="span_43" class="count-number">Zwembad</span></button>
+					<button id="btn_1" type="button" onclick='ToggleSwitch("1");' active="default" class="btn btn-default w-100"><i id="i_1" class="flaticon-nas align-self-center"></i><span id="span_1" class="count-number">NAS (Plex)</span></button>
+					<button id="btn_light" type="button" onclick='ToggleScene("1");' active="default" class="btn btn-default w-100"><i id="i_light" class="flaticon-idea-1 align-self-center"></i><span id="span_light" class="count-number">Lampen</span></button>
+				</div>
+            </div>
+
+            <div class="section animated-row" data-section="slide02">
+                <div class="section-inner">
+
+						<div class="card" style="margin-top:50px;">
+							<div style="width: 90%;">
+								<canvas id="canvas"></canvas>
+							</div>
+						</div>
+                </div>
+            </div>
+		</div>
+	</div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/fullpage.min.js"></script>
+    <script src="js/scrolloverflow.js"></script>
+    <script src="js/jquery.inview.min.js"></script>
+    <script src="js/custom.js"></script>
+	<script src="js/calendar.js"></script>
+	<script src="js/jquery.thooClock.js"></script>  
+	<script src="js/Chart.min.js"></script>
+	<script src="js/utils.js"></script>
+	<script src="js/lodash.min.js"></script>
+	<script src="js/chart.js"></script>  
+	<script src="js/domoticz.js"></script>  	
+	<script language="javascript">
+		var intVal, myclock;
+
+		$(document).ready(function(){
+
+			//clock plugin constructor
+			$('#myclock').thooClock({
+				size:$(document).height()/4,
+				sweepingMinutes:true,
+				sweepingSeconds:true,
+				showNumerals:true,
+				onEverySecond:function(){
+				}
+			});
+
+		});
+	</script>
+
+  </body>
+</html>
