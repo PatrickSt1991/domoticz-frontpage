@@ -2,13 +2,9 @@
 <!--	SmartHome Bootstrap Website.					-->	
 <!--	Based on Elegance Template.						-->
 <!--	URL: https://templatemo.com/tm-528-elegance		-->
-<!--	Images in buttons are from FontAwesome			-->
-<!--	URL: https://fontawesome.com/					-->
-<!-------------------------------------------------------->
 <!--	Modified by Patrick.							-->
 <!--	Show Smartthings on you wall tablet.			-->
-<!-------------------------------------------------------->
-<!--	Line 152 till 156 contains the buttons 			-->
+<!--	Line 150 till 154 contains the buttons 			-->
 <!--	Don't forget to change ToggleSwitch number		-->
 <!--	Custom Javascript Files;						-->
 <!--	 - domoticz.js 	(Fetch domoticz status)			-->
@@ -62,17 +58,18 @@
 				
 			});
 			
-			setInterval(function() {
+				setInterval(function() {
+					getSceneData();
+					getSwitchData();
+					getTimeDateTemp();
+					roombaVirtualWall();
+				}, pageRefresh);
+				
 				getSceneData();
 				getSwitchData();
 				getTimeDateTemp();
+				getCalender();
 				roombaVirtualWall();
-			}, pageRefresh);
-			
-			getSceneData();
-			getSwitchData();
-			getTimeDateTemp();
-			roombaVirtualWall();
 		});
 	</script>	
     <div id="video">
