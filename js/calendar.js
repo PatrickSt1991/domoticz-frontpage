@@ -19,35 +19,66 @@ if (day.length < 2)
 	day = '0' + day;
 
 var today = [day, month, year].join('-');
+var sliceArray = false;
+var skipCheck = false;
 
 var request = new XMLHttpRequest();
 request.open("GET", "../../domoticz/cal/calender.json", false);
 request.overrideMimeType("application/json");
 request.send(null);
 var jsonData = JSON.parse(request.responseText);
+
+if(jsonData[0].length === 0 && jsonData[1].length === 0)
+{
+	jsonData.splice(1,1)
+	jsonData.splice(0,1)
+	
+	skipCheck = true;
+}
+
+if( skipCheck === false)
+{
+	if(jsonData[0].length === 0)
+	{
+		jsonData.splice(0,1)
+		sliceArray = true;
+	}
+
+	if(sliceArray === false)
+	{
+		if(jsonData[1].length === 0)
+		{
+			jsonData.splice(1,1);
+		}
+	}
+}
+
 var PlannerLength = jsonData.length;
 
 if(PlannerLength >= 1) {
-	for (var calenderInteger=0; calenderInteger<jsonData.length; calenderInteger++) {
-		if(calenderInteger < 3) {
-			var calendarEvent = jsonData[calenderInteger][0].event;
-			var calendarDate = jsonData[calenderInteger][0].date;
-			var node = document.createElement("LI");
-			node.className = 'list-group-item';
-			node.style.backgroundColor = 'transparent';
-			var eventDate = calendarDate.substring(0,10);
-			var niceEventDate = eventDate.replace(/\./g, '-');
-			
-			if(niceEventDate == today) {
-				var showDay = "Vandaag";
-			} else {
-				var showDay = "Morgen";
+	for (var calenderInteger=0; calenderInteger<PlannerLength; calenderInteger++) {
+		var calendarSubEvent = jsonData[calenderInteger].length;
+		for (var calenderSubInteger=0; calenderSubInteger<calendarSubEvent; calenderSubInteger++) {
+			if(calenderSubInteger < 3) {
+				var calendarEvent = jsonData[calenderInteger][calenderSubInteger].event;
+				var calendarDate = jsonData[calenderInteger][calenderSubInteger].date;
+				var node = document.createElement("LI");
+				node.className = 'list-group-item';
+				node.style.backgroundColor = 'transparent';
+				var eventDate = calendarDate.substring(0,10);
+				var niceEventDate = eventDate.replace(/\./g, '-');
+				
+				if(niceEventDate == today) {
+					var showDay = "Vandaag";
+				} else {
+					var showDay = "Morgen";
+				}
+				
+				var textnode = document.createTextNode(showDay + " " + calendarEvent);
+				
+				node.appendChild(textnode);
+				document.getElementById("calendarEvents").appendChild(node);
 			}
-			
-			var textnode = document.createTextNode(showDay + " " + calendarEvent);
-			
-			node.appendChild(textnode);
-			document.getElementById("calendarEvents").appendChild(node);
 		}
 	}
 }else{
