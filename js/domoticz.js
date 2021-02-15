@@ -13,7 +13,8 @@
 
 var domoticzIP = '192.168.0.125:8080';
 var roombaIDX = '60';
-var idx_array = ['35','44','43','1','66']; //All buttons from Domoticz but no Scenes, otherwise you get two times id 1, Scene is line 106
+var afvalDataIDX = '66';
+var idx_array = ['35','44','43','1']; //All buttons from Domoticz but no Scenes, otherwise you get two times id 1
 
 var m_names = ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augusts", "September", "Oktober", "November", "December"];
 var d_names = ["Zondag","Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"];
@@ -27,7 +28,7 @@ var d = new Date(),
 	year = d.getFullYear();
 
 var today = [day, show_month, year].join('-');
-var tomorrow = [tomorrow_day, month, year].join('-');
+var tomorrow = [tomorrow_day, show_month, year].join('-');
 
 if (day.length < 2) { day = '0' + day;}
 if (tomorrow_day.length < 2) { tomorrow_day = '0' + tomorrow_day;}
@@ -42,10 +43,7 @@ function getSwitchData(){
 
 			var switchStatus = result.result[0].Status;
 			var switchIDX = result.result[0].idx;
-			var afvalData = result.result[0].Data;
-			var afvalSolo = [];
 			
-
 			if (switchStatus === 'On')
 			{
 				$("#i_"+switchIDX).attr('style',  'color: #DECF3F');
@@ -56,51 +54,55 @@ function getSwitchData(){
 				$("#btn_"+switchIDX).attr('style', null);
 				$("#btn_"+switchIDX).attr('active', 'default');
 			}
-		
-			if (switchIDX === '66')
-			{
-				var afvalDataSplit = afvalData.split("\r\n");
-				afvalDataSplit.pop();
-				
-				for (let i = 0; i < 2; i++) 
-				{
-					var breakSolo = afvalDataSplit[i].split(": ");
-					afvalSolo.push(breakSolo);
-				}
-				
-				var afvalInteger = 0;
-				for (let afvalInteger = 0; afvalInteger < 2; afvalInteger++) {
-					if (today === afvalSolo[afvalInteger][0])
-					{
-						var showIcon = afvalSolo[afvalInteger][1];
-						var node = document.createElement("LI");
-						textnode = document.createElement("div");
-						node.className = 'align-middle; list-group-item';	
-						node.style='background-color: transparent; align-items: center;';
-						textnode.style='align-items:center; height: 67px;';
-						textnode.innerHTML = "<p id=\"dag\" style=\"float:left; transform: translateX(50%) translateY(50%);\">Vandaag: </p><img id=\"imgType\" style=\"float: right;\" src=\"images/" + showIcon + "_80.png\"><p id=\"type\" style=\"float: none; transform: translateY(50%);\">" + afvalSolo[afvalInteger][2] + "</p>";
-						node.appendChild(textnode);
-					
-						document.getElementById("calendarEvents").appendChild(node);						
-					}
-
-					if (tomorrow === afvalSolo[afvalInteger][0]) 
-					{
-						var showIcon = afvalSolo[afvalInteger][1];
-						var node = document.createElement("LI");
-						textnode = document.createElement("div");
-						node.className = 'align-middle; list-group-item';	
-						node.style='background-color: transparent; align-items: center;';
-						textnode.style='align-items:center; height: 67px;';
-						textnode.innerHTML = "<p id=\"dag\" style=\"float:left; transform: translateX(50%) translateY(50%);\">Morgen: </p><img id=\"imgType\" style=\"float: right;\" src=\"images/" + showIcon + "_80.png\"><p id=\"type\" style=\"float: none; transform: translateY(50%);\">" + afvalSolo[afvalInteger][2] + "</p>";
-						node.appendChild(textnode);
-					
-						document.getElementById("calendarEvents").appendChild(node);	
-					}
-				}
-			}
 		});
 	}
+}
+
+function getCalender(){
+	
+	$.getJSON('http://' + domoticzIP + '/json.htm?type=devices&rid=' + afvalDataIDX, function (result) {
+		var afvalData = result.result[0].Data;
+		var afvalSolo = [];
+		var afvalDataSplit = afvalData.split("\r\n");
+		afvalDataSplit.pop();
+		
+		for (let i = 0; i < 2; i++) 
+		{
+			var breakSolo = afvalDataSplit[i].split(": ");
+			afvalSolo.push(breakSolo);
+		}
+		
+		var afvalInteger = 0;
+		for (let afvalInteger = 0; afvalInteger < 2; afvalInteger++) {
+			if (today === afvalSolo[afvalInteger][0])
+			{
+				var showIcon = afvalSolo[afvalInteger][1];
+				var node = document.createElement("LI");
+				textnode = document.createElement("div");
+				node.className = 'align-middle; list-group-item';	
+				node.style='background-color: transparent; align-items: center;';
+				textnode.style='align-items:center; height: 67px;';
+				textnode.innerHTML = "<p id=\"dag\" style=\"float:left; transform: translateX(50%) translateY(50%);\">Vandaag: </p><img id=\"imgType\" style=\"float: right;\" src=\"images/" + showIcon + "_80.png\"><p id=\"type\" style=\"float: none; transform: translateY(50%);\">" + afvalSolo[afvalInteger][2] + "</p>";
+				node.appendChild(textnode);
+			
+				document.getElementById("calendarEvents").appendChild(node);						
+			}
+
+			if (tomorrow === afvalSolo[afvalInteger][0]) 
+			{
+				var showIcon = afvalSolo[afvalInteger][1];
+				var node = document.createElement("LI");
+				textnode = document.createElement("div");
+				node.className = 'align-middle; list-group-item';	
+				node.style='background-color: transparent; align-items: center;';
+				textnode.style='align-items:center; height: 67px;';
+				textnode.innerHTML = "<p id=\"dag\" style=\"float:left; transform: translateX(50%) translateY(50%);\">Morgen: </p><img id=\"imgType\" style=\"float: right;\" src=\"images/" + showIcon + "_80.png\"><p id=\"type\" style=\"float: none; transform: translateY(50%);\">" + afvalSolo[afvalInteger][2] + "</p>";
+				node.appendChild(textnode);
+			
+				document.getElementById("calendarEvents").appendChild(node);	
+			}
+		}
+	});
 }
 
 function getSceneData(){
