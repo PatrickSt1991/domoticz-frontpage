@@ -11,7 +11,8 @@
 var d = new Date(),
 	month = '' + (d.getMonth() + 1),
 	day = '' + d.getDate(),
-	year = d.getFullYear();
+	year = d.getFullYear(),
+	tomorrow_day = '' + (d.getDate() + 1);
 
 if (month.length < 2) 
 	month = '0' + month;
@@ -19,6 +20,7 @@ if (day.length < 2)
 	day = '0' + day;
 
 var today = [day, month, year].join('-');
+var tomorrow = [tomorrow_day, month, year].join('-');
 var sliceArray = false;
 var skipCheck = false;
 
@@ -54,7 +56,6 @@ if( skipCheck === false)
 }
 
 var PlannerLength = jsonData.length;
-
 if(PlannerLength >= 1) {
 	for (var calenderInteger=0; calenderInteger<PlannerLength; calenderInteger++) {
 		var calendarSubEvent = jsonData[calenderInteger].length;
@@ -67,11 +68,13 @@ if(PlannerLength >= 1) {
 				node.style.backgroundColor = 'transparent';
 				var eventDate = calendarDate.substring(0,10);
 				var niceEventDate = eventDate.replace(/\./g, '-');
-				
+
 				if(niceEventDate == today) {
 					var showDay = "Vandaag";
-				} else {
+				} else if (niceEventDate == tomorrow) {
 					var showDay = "Morgen";
+				} else {
+					var showDay = "Overmorgen";
 				}
 				
 				var textnode = document.createTextNode(showDay + " " + calendarEvent);

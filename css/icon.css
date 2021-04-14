@@ -1,0 +1,61 @@
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before, [class^="flaticon-"]:after, [class*=" flaticon-"]:after {
+    font-family: Flaticon;
+    font-size: 50px;
+    padding-left: 0px;
+	margin-left: 0px;
+    font-style: normal;
+}
+
+[class^="modal-"] {
+	color: #000;
+}
+
+.btn-light {
+	color: #212529;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+
+.btn-close {
+	color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-sun {
+	color: #fff;
+    background-color: #f28c38;
+    border-color: #f28c38;
+}
+
+.left {
+	float: left;
+	padding-left: 40px;
+}
+
+.right {
+	float: right;
+	padding-right: 50px;
+}
+
+.window {
+	border-right: 1px solid #e9ecef;
+}
+
+.info {
+	color: #fff;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+	line-height: 25px;
+}
+
+.success {
+	color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+	line-height: 25px;
+}
+
+.slider.slider-horizontal{
+  width:300px !important; /* sample value - set it as you like*/
+}

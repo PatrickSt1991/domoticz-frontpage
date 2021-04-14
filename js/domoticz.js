@@ -11,7 +11,7 @@
 /*	################ PLEASE NOTICE ################	*/
 /*--------------------------------------------------*/
 
-var domoticzIP = '192.168.0.125:8080';
+var domoticzIP = '000.000.000.000:8080';
 var roombaIDX = '60';
 var afvalDataIDX = '66';
 var idx_array = ['35','44','43','1']; //All buttons from Domoticz but no Scenes, otherwise you get two times id 1
@@ -105,6 +105,8 @@ function getCalender(){
 	});
 }
 
+
+
 function getSceneData(){
 
 	$.getJSON('http://' + domoticzIP + '/json.htm?type=scenes', function(scenes) {
@@ -113,7 +115,7 @@ function getSceneData(){
 		var scenesStatus = scenes.result[0].Status;
 		
 		if (scenesIDX == '1'){
-			if (scenesStatus == 'On'){
+			if ((scenesStatus == 'On') || (scenesStatus == 'Mixed')){
 				$("#i_light").attr('style',  'color: #DECF3F');
 				$("#btn_light").attr('style', 'background-color: #EFEFEF');
 				$("#btn_light").attr('active', 'yes');
@@ -127,6 +129,16 @@ function getSceneData(){
 }
 
 function roombaVirtualWall(){
+	
+	$.getJSON('http://' + domoticzIP + '/json.htm?type=devices&rid=68', function(result) {
+		var wallOnOffStatus = result.result[0].Data;	
+		
+		if (wallOnOffStatus === 'On')
+		{
+			$("#hidden_info_activewall").attr('style', 'display: block;');
+		}
+	});
+	
 	$.getJSON('http://' + domoticzIP + '/json.htm?type=devices&rid=' + roombaIDX, function(result) {
 		var wallUpdateTime = result.result[0].LastUpdate;	
 		var date1 = new Date(wallUpdateTime);
@@ -147,6 +159,28 @@ function roombaVirtualWall(){
 		if (timeDiff > 24)
 		{
 			$("#hidden_warning").attr('style', 'display: block;');
+			$("#btn_44").attr('disabled', '');
+			$("#btn_44").attr('style', 'background: #ebeaea;');
+			$("#btn_44").attr('style', 'opacity: .85');
+			
+			$.getJSON('http://' + domoticzIP + '/json.htm?type=devices&rid=70', function(result) {
+				var wallBatStatus = result.result[0].Data;	
+				
+				if (wallBatStatus === 'FullOperational')
+				{
+					$.ajax({ url: 'http://' + domoticzIP + '/json.htm?type=command&param=udevice&idx=70&nvalue=0&svalue=EmptyReplace' });
+				}
+			});
+		} else {
+			
+			$.getJSON('http://' + domoticzIP + '/json.htm?type=devices&rid=70', function(result) {
+				var wallBatStatus = result.result[0].Data;	
+				
+				if (wallBatStatus === 'EmptyReplace')
+				{
+					$.ajax({ url: 'http://' + domoticzIP + '/json.htm?type=command&param=udevice&idx=70&nvalue=0&svalue=FullOperational' });
+				}
+			});
 		}
 		
 	});
@@ -157,7 +191,7 @@ function getTimeDateTemp(){
 	
 	$.getJSON('http://' + domoticzIP + '/json.htm?type=devices&filter=temp&used=true', function(scenes) {
 		
-		kamerTemp = scenes.result[1].Temp;
+		kamerTemp = scenes.result[4].Temp;
 		
 		$.getJSON('https://data.buienradar.nl/2.0/feed/json', function(scenes) {
 			
@@ -171,12 +205,22 @@ function getTimeDateTemp(){
 				var d = new Date(scenes.forecast.fivedayforecast[foreCast].day);
 				var dayName = d_names[d.getDay()];
 				
-				$("#forecastday0"+foreCast).html(dayName);
+				if(dayName === d_names[curr_day])
+				{
+					$("#forecastday0"+foreCast).html("<u>Vandaag</u>");
+				}else{
+					$("#forecastday0"+foreCast).html(dayName);
+				}
 				$("#forecastweather0"+foreCast).html(scenes.forecast.fivedayforecast[foreCast].maxtemperatureMin + "<span class=\"symbol\">°C</span>  <img src=\"" + scenes.forecast.fivedayforecast[foreCast].iconurl + "\">");
 			}
 				
 		});
 	});
+}
+
+function wallBattery() {
+	$.ajax({ url: 'http://' + domoticzIP + '/json.htm?type=command&param=udevice&idx=60&nvalue=0&svalue=3.3' });
+	$("#hidden_warning").attr('style', 'display: none;');
 }
 
 function ToggleSwitch(idx){
@@ -186,3 +230,60 @@ function ToggleSwitch(idx){
 function ToggleScene(idx){
 	$.ajax({ url: 'http://' + domoticzIP + '/json.htm?type=command&param=switchscene&idx=' + idx + '&switchcmd=Toggle' });
 }
+
+function ToggleBlinds(idx, blindValue, idName){
+	if(idName === 'ConfirmAchterraam' || idName === 'ConfirmVoorraam' || idName === 'ConfirmSlaapkamer'){
+		$("#"+idName).attr('style', 'display: none;');
+	}
+	
+	if(idName === 'achterRaamButtons'){
+		$('#rolluikAchterraam').slider('setValue', blindValue, true);
+	}
+
+	if(idName === 'voorRaamButtons'){
+		$('#rolluikVoorraam').slider('setValue', blindValue, true);
+	}
+
+	if(idName === 'slaapKamerButtons'){
+		$('#rolluikSlaapkamer').slider('setValue', blindValue, true);
+	}
+	
+	$.ajax({ url: 'http://' + domoticzIP + '/json.htm?type=command&param=switchlight&idx=' + idx + '&switchcmd=Set%20Level&level=' + blindValue });
+}
+
+//Slider Voorraam
+$.getJSON('http://' + domoticzIP + '/json.htm?type=devices&rid=52', function(result){
+	voorraamLevel = result.result[0].Level;
+	$("#rolluikVoorraam").slider({ min: 0, max: 100, value: voorraamLevel, tooltip: 'always', focus: true });
+});
+
+$("#rolluikVoorraam").on("change", function(event){
+	$("#ConfirmVoorraam").attr('style', 'display: block;');
+	$("#ConfirmVoorraam").val(event.value.newValue);
+});
+
+/***********************/
+//  Slider Achterraam  //
+/***********************/
+$.getJSON('http://' + domoticzIP + '/json.htm?type=devices&rid=53', function(result){
+	achterraamLevel = result.result[0].Level;
+	$("#rolluikAchterraam").slider({ min: 0, max: 100, value: achterraamLevel, tooltip: 'always', focus: true });
+});
+
+$("#rolluikAchterraam").on("change", function(event){
+	$("#ConfirmAchterraam").attr('style', 'display: block;');
+	$("#ConfirmAchterraam").val(event.value.newValue);
+});
+
+/***********************/
+//  Slider Slaapkamer  //
+/***********************/
+$.getJSON('http://' + domoticzIP + '/json.htm?type=devices&rid=78', function(result){
+	slaapkamerLevel = result.result[0].Level;
+	$("#rolluikSlaapkamer").slider({ min: 0, max: 100, value: slaapkamerLevel, tooltip: 'always', focus: true });
+});
+
+$("#rolluikSlaapkamer").on("change", function(event){
+	$("#ConfirmSlaapkamer").attr('style', 'display: block;');
+	$("#ConfirmSlaapkamer").val(event.value.newValue);
+});

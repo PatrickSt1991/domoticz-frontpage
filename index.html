@@ -10,6 +10,10 @@
 <!--	 - domoticz.js 	(Fetch domoticz status)			-->
 <!--	 - chart.js		(Fets Solarpanel info)			-->
 <!--	 - calendar.js	(Fets Google Calendar info)		-->
+<!-- ################################################## -->
+<!--	Version 3.2:									-->
+<!--		- Updated with Rolluik functionality		-->
+<!-- ################################################## -->
 <!-------------------------------------------------------->
 <!DOCTYPE html>
 <html lang="en">
@@ -28,6 +32,7 @@
 		<link rel="stylesheet" type="text/css" href="css/responsive.css">
 		<link rel="stylesheet" type="text/css" href="css/templatemo-style.css">
 		<link rel="stylesheet" type="text/css" href="css/icon.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap-slider.css">
 	</head>
     
     <body>
@@ -94,7 +99,64 @@
                 </div>
             </div>
         </header>
-
+		<!-- Modal (it's hidden until you press Rolluiken -->
+		<div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header"></div>
+					<div class="modal-body">
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-6 col-sm-6">
+									Voorraam
+									<br/>
+									<input id="rolluikVoorraam" type="text"/>
+									<br/><br/>
+									<div class="left"><button type="button" id="voorRaamButtons" onclick='ToggleBlinds("52", 0, this.id);' class="btn info">Open</button></div>
+									<div class="right"><button type="button" id="voorRaamButtons" onclick='ToggleBlinds("52", 100, this.id);' class="btn info">Dicht</button></div>
+									<br/><br/>
+									<center>
+										<button id="ConfirmVoorraam" type="button" onclick='ToggleBlinds("52", this.value, this.id);' class="btn success" style="display: none;">Bevestig</button>
+									</center>
+								</div>
+								<div class="col-6 col-sm-6">
+									Achterraam
+									<br/>
+									<input id="rolluikAchterraam" type="text"/>
+									<br/><br/>
+									<div class="left"><button type="button" id="achterRaamButtons" onclick='ToggleBlinds("53", 0, this.id);' class="btn info">Open</button></div>
+									<div class="right"><button type="button" id="achterRaamButtons" onclick='ToggleBlinds("53", 100, this.id); 'class="btn info">Dicht</button></div>
+									<br/><br/>
+									<center>
+										<button id="ConfirmAchterraam" type="button" onclick='ToggleBlinds("53", this.value, this.id);' class="btn success" style="display: none;">Bevestig</button>
+									</center>
+								</div>
+							</div>
+							<br/>
+							<div class="row">
+								<div class="col col-sm">
+									Slaapkamer
+									<br/>
+									<input id="rolluikSlaapkamer" type="text"/>
+									<br/><br/>
+									<button type="button" id="slaapKamerButtons" onclick='ToggleBlinds("78", 0, this.id);' class="btn info" style="margin-right: 20px;">Open</button>
+									<button type="button" id="slaapKamerButtons" onclick='ToggleBlinds("78", 100, this.id); 'class="btn info">Dicht</button>
+									<br/><br/>
+									<center>
+										<button id="ConfirmSlaapkamer" type="button" onclick='ToggleBlinds("78", this.value, this.id);' class="btn success" style="display: none;">Bevestig</button>
+									</center>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-sun" data-dismiss="modal">Zon</button>
+						<button type="button" class="btn btn-close" data-dismiss="modal">Sluiten</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal (it's hidden until you press Rolluiken -->
         <div id="fullpage" class="fullpage-default">
             <div class="section animated-row" data-section="slide01">
 				<div class="section-inner">
@@ -116,6 +178,12 @@
 									<div id="hidden_warning" class="alert alert-danger" role="alert" style="border-color: #000; display: none;">
 									  <b><u>Roomba Virtual Wall</u></b><br/>
 									  batterijen zijn leeg!
+									  <br/>
+									  <button type="button" class="btn btn-light" onclick="wallBattery();">Baterijen vervangen.</button>
+									</div>
+									</br>
+									<div id="hidden_info_activewall" class="alert alert-info" role="alert" style="border-color: #000; display: none;">
+									  Roomba Virtual Wall staat aan.
 									</div>
 								</div>
 							</div>
@@ -148,6 +216,7 @@
 				<br/>
 				<!--!!..don't forget to change the ToggleSwitch value..!!-->
 				<div id="buttons" class="btn-group d-flex" role="group">
+					<button type="button" onclick='' active="default" class="btn btn-default w-100" data-toggle="modal" data-target="#exampleModalCenter"><i class="flaticon-blinds align-self-center"></i><span class="count-number">Rolluiken</span></button>
 					<button id="btn_35" type="button" onclick='ToggleSwitch("35");' active="default" class="btn btn-default w-100"><i id="i_35" class="flaticon-ps4 align-self-center"></i><span id="span_35" class="count-number">Playstation</span></button>
 					<button id="btn_44" type="button" onclick='ToggleSwitch("44");' active="default" class="btn btn-default w-100"><i id="i_44" class="flaticon-cleaner align-self-center"></i><span id="span_44" class="count-number">Roomba</span></button>
 					<button id="btn_43" type="button" onclick='ToggleSwitch("43");' active="default" class="btn btn-default w-100"><i id="i_43" class="flaticon-swimming-pool align-self-center"></i><span id="span_43" class="count-number">Zwembad</span></button>
@@ -158,18 +227,18 @@
 
             <div class="section animated-row" data-section="slide02">
                 <div class="section-inner">
-
-						<div class="card" style="margin-top:50px;">
-							<div style="width: 90%;">
-								<canvas id="canvas"></canvas>
-							</div>
+					<div class="card" style="margin-top:50px;">
+						<div style="width: 90%;">
+							<canvas id="canvas"></canvas>
 						</div>
+					</div>
                 </div>
             </div>
 		</div>
 	</div>
 
     <script src="js/bootstrap.min.js"></script>
+	<script src="js/bootstrap-slider.js"></script>
     <script src="js/fullpage.min.js"></script>
     <script src="js/scrolloverflow.js"></script>
     <script src="js/jquery.inview.min.js"></script>

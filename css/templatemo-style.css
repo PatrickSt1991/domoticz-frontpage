@@ -1,0 +1,592 @@
+/*
+
+Elegance Template
+
+https://templatemo.com/tm-528-elegance
+
+==================================================
+CSS SITEMAP >>>>
+
+  01. GENERAL CSS
+  02. HEADER CSS
+  03. SOCIAL ICONS CSS
+  04. WELCOME BLOCK CSS
+  05. ABOUT BLOCK CSS
+  06. SERVICES BLOCK CSS
+  07. WORK BLOCK CSS
+  08. CONTACT BLOCK CSS
+  09. TESTIMONOALS BLOCK CSS
+  10. SKILLS BLOCK CSS
+
+
+==================================================*/
+
+/*==============================================
+01. GENERAL CSS
+================================================*/
+
+html,
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -ms-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  font: 16px/1.6 'Raleway', Arial, Helvetica, sans-serif;
+  color: #fff;
+  text-align:center;
+  background: #222;
+}
+img {
+  border: 0;
+  max-width: 100%;
+}
+html {
+  -ms-overflow-style: scrollbar;
+}
+.alltrans,
+.social-icons li a,
+.owl-nav > button,
+.owl-nav > button:after,
+.counter-box,
+.about-img:after,
+.gallery-img img,
+.form-control,
+.owl-dot,
+.subscribe-row,
+.close-btn,
+.close-btn:before,
+.close-btn:after,
+.tag-btn,
+.btn {
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  color: #fff;
+  outline: none;
+  text-decoration: underline;
+}
+@media screen and (-ms-high-contrast:active), (-ms-high-contrast:none) {
+  a:active {
+    background-color: transparent;
+  }
+}
+p {
+  margin: 0 0 20px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  margin: 0 0 20px;
+  font-weight: 600;
+  text-transform:uppercase;
+}
+h1,
+h2 {
+  font-size: 32px;
+}
+h3 {
+  font-size: 30px;
+  font-weight: 600;
+}
+h4 {
+  font-size: 22px;
+  font-weight: 600;
+}
+h5 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+h6 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+#main {
+  padding: 0;
+  background: #fff;
+}
+.no-margin {
+  margin: 0 !important;
+}
+figure {
+  margin:0;
+}
+.opacity-no {
+  opacity: 1 !important;
+}
+
+video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%; 
+  min-height: 100%;
+}
+#video:after {
+  content: '';
+  opacity: 0.75;
+  background: #4096ee; /* Old browsers */
+  background: -moz-linear-gradient(top, #4096ee 0%, #39ced6 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #4096ee 0%,#39ced6 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #4096ee 0%,#39ced6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4096ee', endColorstr='#39ced6',GradientType=0 ); /* IE6-9 */
+  position:fixed;
+  left:0;
+  top:0;
+  right:0;
+  bottom: 0;
+}
+.wrapper-background-dark:after {
+  background: #222;
+  opacity:0.95;
+}
+.section-inner {
+  padding:20px 30px 0;
+}
+.fp-scrollable {
+  height:calc(100vh - 200px) !important;
+}
+#fp-nav ul li a span {
+ display: none;
+}
+
+.weakly-weather-item {
+  color: #000;
+  background: #fff;
+  overflow-x: auto;
+  flex: 1 0 14.28%;
+  border-right: 1px solid #d1cdcd;
+  padding: 0.25rem;
+  text-align: center;
+}
+
+.container_clock {
+	margin-top: 20px;
+}
+
+.btn {
+  background: #fff;
+  color: #222;
+  text-align:center;
+  line-height:52px;
+  padding:10px 35px;
+  border: 0px solid transparent;
+  border-right: 2px solid #d1cdcd;
+}
+
+.btn:focus {
+  box-shadow:none;
+  outline:none;
+}
+.btn.btn-xs {
+  line-height:34px;
+  font-size:12px;
+  padding:0 20px;
+  font-weight: 500;
+}
+.btn.btn-outline {
+  background:none;
+  border-color:#fff;
+  color:#fff;
+  border-width:1px;
+}
+.btn.btn-outline:hover, .btn.btn-outline:focus {
+  background:#fff;
+  color:#222;
+}
+.btn.btn-dark {
+  color: #222;
+  border-color: #222;
+}
+.btn.btn-dark:hover, .btn.btn-dark:focus {
+  background: #222;
+  color: #fff;
+}
+.owl-carousel .owl-stage {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+.owl-carousel .owl-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  flex: 1 0 auto;
+}
+.preloader {
+  background: -moz-linear-gradient(top, #4096ee 0%, #39ced6 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #4096ee 0%,#39ced6 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #4096ee 0%,#39ced6 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4096ee', endColorstr='#39ced6',GradientType=0 ); /* IE6-9 */
+  height: 100%;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 9999;
+  text-align: center;
+}
+.preloader-bounce {
+  left: 0;
+  right: 0;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  position: absolute;
+}
+.preloader-bounce > span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 0.3em;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-animation: bounce 0.6s infinite alternate;
+  animation: bounce 0.6s infinite alternate;
+  background: #fff;
+}
+.preloader-bounce > span:nth-child(2){
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+  background: #fff;
+}
+.preloader-bounce > span:nth-child(3){
+  -webkit-animation-delay: 0.3s;
+  animation-delay: 0.3s;
+  background: #fff;
+}
+
+@-webkit-keyframes bounce {
+  from {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  to {
+    -webkit-transform: translateY(-1.2em);
+    transform: translateY(-1.2em);
+  }
+}
+
+@keyframes bounce {
+  from {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+  to {
+    -webkit-transform: translateY(-1.2em);
+    transform: translateY(-1.2em);
+  }
+}
+
+#fullpage {
+  z-index: 99;
+}
+
+
+/*==============================================
+02. HEADER CSS
+================================================*/
+#header {
+  padding:20px 0;
+  position: fixed;
+  left:0;
+  right:0;
+  top:0;
+  z-index:999;
+}
+.container-fluid {
+  padding:0 20px;
+}
+a#logo {
+  text-decoration: none;
+  font-size: 32px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.navbar {
+  padding: 0;
+}
+.navbar-toggle {
+  display:none;
+}
+.navbar-nav {
+  -ms-flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+}
+.navbar-nav li {
+  margin-left: 30px;
+}
+.navbar-nav li a {
+  color:#fff;
+  font-size: 15px;
+  text-decoration:none;
+  display:block;
+  font-weight: 500;
+  opacity: 0.9;
+}
+.navbar-nav li a:after {
+  content:'';
+  display:block;
+  height: 2px;
+  background:#fff;
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  -webkit-transform:scale(0);
+  transform:scale(0);
+  margin-top: 4px;
+}
+.navbar-nav li a:hover:after, .navbar-nav li.active a:after{
+  -webkit-transform:scale(1);
+  transform:scale(1);
+}
+.navbar-nav li a:hover {
+  opacity: 1;
+}
+.navbar-nav li.active a {
+  opacity: 1;
+}
+.collapse:not(.show) {
+  display:block;
+}
+
+/*==============================================
+03. SOCIAL ICONS CSS
+================================================*/
+#social-icons {
+  padding:0;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  right:0;
+  z-index: 199;
+}
+.social-icons {
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.social-icons li {
+  display: block;
+  margin: 1px 0px;
+}
+.social-icons li a {
+  width:50px;
+  height:50px;
+  display:inline-block;
+  line-height:50px;
+  text-align:center;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255,255,255,1);
+  font-size:18px;
+}
+.social-icons li a:hover {
+  color:#1e1e1e;
+  background-color: #fff;
+}
+/*==============================================
+04. WELCOME BLOCK CSS
+================================================*/
+.welcome-box {
+  font-size:20px;
+  line-height:1.7;
+}
+.welcome-first{
+  font-size: 32px;
+  display: block;
+  text-transform: uppercase;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+.welcome-box p {
+  max-width: 620px;
+  width:100%;
+  margin:0 auto 30px;
+  color: #fff;
+}
+.welcome-title {
+  font-weight: 700;
+  font-size: 120px;
+  margin-bottom: 10px;
+  letter-spacing:0.02em;
+}
+.welcome-title span {
+  font-size:36px;
+  display:block;
+  font-weight:300;
+  line-height:1.2;
+}
+.welcome-box .btn {
+  margin-top: 10px;
+}
+.next-section {
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 30px;
+  cursor: pointer;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+.next-section span {
+  margin-top: 15px;
+  display: block;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+}
+.next-section i:hover {
+  opacity: 1;
+}
+
+/*==============================================
+05. ABOUT ME
+================================================*/
+.about-img {
+  margin: 0 auto 40px;
+  position:relative;
+}
+.about-img img {
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 40px rgba(0,0,0,.3);
+  box-shadow: 0 0 40px rgba(0,0,0,.3);
+}
+.about-contentbox {
+  margin-top: 80px;
+  text-align:left;
+  line-height:1.8;
+}
+.about-contentbox span {
+  font-size: 24px;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+.about-contentbox h2 {
+  font-size: 32px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.facts-list {
+  margin-top: 30px;
+}
+.facts-list .item {
+  overflow: hidden;
+  text-align:center;
+  border-radius: 10px;
+  width: 100%;
+  display: inline-block;
+  text-transform:capitalize;
+  font-size:14px;
+  padding: 30px 0px;
+  background: rgba(0,0,0,0.25);
+}
+.counter-box span {
+  font-size: 26px;
+  font-weight: 700;
+}
+.counter-icon {
+  font-size: 30px;
+  margin-bottom: 10px;
+  opacity: 0.75;
+}
+.facts-list .item:hover {
+  background:#fff;
+  color:#1e1e1e;
+}
+.facts-list .owl-dots {
+  margin-bottom: 30px;
+}
+.count-number, .counted {
+  display:block;
+  line-height:1;
+  margin-bottom:10px;
+}
+
+/*==============================================
+06. SERVICES BLOCK CSS
+================================================*/
+.title-block {
+  margin-bottom: 40px;
+}
+.title-block span {
+  font-size: 24px;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+.services-list .item {
+  background-color: rgba(250,250,250,0.25);
+  border-radius: 10px;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+.service-icon {
+  display:block;
+  margin: 0 auto 0;
+  font-size: 64px;
+}
+.service-box {
+  font-size:15px;
+  padding:40px 20px;
+  height:100%;
+}
+.services-list .item:hover {
+  background-color: #fff;
+  color: #1e1e1e;
+}
+.service-box h3 {
+  font-size:22px;
+  font-weight:700;
+  text-transform: capitalize;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+.service-box p:last-child {
+  margin:0;
+}
+.owl-carousel .owl-dots .owl-dot {
+  border-radius: 3px;
+}
+.owl-dots {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    margin-top: 50px
+}
+
+.owl-carousel .owl-dots .owl-dot {
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+    background: rgba(255, 255, 255, .2)
+}
+
+.owl-carousel .owl-dots .owl-dot:focus {
+    outline: none
+}
+
+.owl-carousel .owl-dots .owl-dot.active {
+    background: #fff
+}
