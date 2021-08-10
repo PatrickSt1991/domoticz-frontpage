@@ -18,6 +18,8 @@ if (month.length < 2)
 	month = '0' + month;
 if (day.length < 2) 
 	day = '0' + day;
+if (tomorrow_day.length < 2)
+	tomorrow_day = '0' + tomorrow_day;
 
 var today = [day, month, year].join('-');
 var tomorrow = [tomorrow_day, month, year].join('-');
@@ -68,7 +70,6 @@ if(PlannerLength >= 1) {
 				node.style.backgroundColor = 'transparent';
 				var eventDate = calendarDate.substring(0,10);
 				var niceEventDate = eventDate.replace(/\./g, '-');
-
 				if(niceEventDate == today) {
 					var showDay = "Vandaag";
 				} else if (niceEventDate == tomorrow) {
@@ -76,7 +77,6 @@ if(PlannerLength >= 1) {
 				} else {
 					var showDay = "Overmorgen";
 				}
-				
 				var textnode = document.createTextNode(showDay + " " + calendarEvent);
 				
 				node.appendChild(textnode);
